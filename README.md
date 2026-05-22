@@ -3,6 +3,8 @@
 AI e-commerce photography studio. Implemented from the Claude Design handoff
 bundle (`index.html` and its five views: 灵感 / 工作室 / 编辑器 / 视频 / 素材库).
 
+> 完整的部署与使用文档见 [`docs/DEPLOYMENT.md`](docs/DEPLOYMENT.md)。
+
 ## Tech stack
 
 | Concern              | Choice                                            |
