@@ -3,6 +3,7 @@
  */
 import type { Project, ProjectStatus, Look } from "@looma/shared";
 import { query } from "../pool.js";
+import { toIso } from "../util.js";
 
 interface ProjectRow {
   id: string;
@@ -23,8 +24,8 @@ function toProject(row: ProjectRow): Project {
     note: row.note,
     status: row.status,
     looks: row.looks,
-    createdAt: row.created_at.toISOString(),
-    updatedAt: row.updated_at.toISOString(),
+    createdAt: toIso(row.created_at),
+    updatedAt: toIso(row.updated_at),
   };
 }
 

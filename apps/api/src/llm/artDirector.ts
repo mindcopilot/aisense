@@ -8,10 +8,10 @@
  * so the product is fully runnable offline.
  */
 import { generateObject } from "ai";
-import { createAnthropic } from "@ai-sdk/anthropic";
 import { z } from "zod";
 import type { ChatMessage, Look } from "@looma/shared";
 import { config } from "../config.js";
+import { models } from "./models.js";
 import { startTrace } from "./observability.js";
 
 const LOOKS: Look[] = [
@@ -87,7 +87,7 @@ export async function directShoot(
   const latest = history.at(-1)?.text ?? "";
   const trace = startTrace("studio.art-director", { projectId });
 
-  if (!config.llm.anthropicApiKey) {
+  if (!config.llm.live) {
     const output = localFallback(latest);
     trace.logGeneration({
       name: "art-director.fallback",
@@ -99,12 +99,11 @@ export async function directShoot(
     return output;
   }
 
-  const anthropic = createAnthropic({ apiKey: config.llm.anthropicApiKey });
   const prompt = buildPromptHistory(history);
 
   try {
     const { object, usage } = await generateObject({
-      model: anthropic(config.llm.model),
+      model: models.artDirector,
       schema: directorSchema,
       system: SYSTEM_PROMPT,
       prompt,
@@ -112,7 +111,7 @@ export async function directShoot(
 
     trace.logGeneration({
       name: "art-director",
-      model: config.llm.model,
+      model: config.llm.chatModel,
       input: prompt,
       output: object,
       usage: {
