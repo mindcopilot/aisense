@@ -6,9 +6,12 @@
 import { fileURLToPath } from "node:url";
 import { Worker, NativeConnection } from "@temporalio/worker";
 import { config } from "./config.js";
+import { initDatabase } from "./db/init.js";
 import * as activities from "./temporal/activities.js";
 
 async function run(): Promise<void> {
+  await initDatabase();
+
   const connection = await NativeConnection.connect({
     address: config.temporal.address,
   });

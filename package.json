@@ -9,6 +9,8 @@
   ],
   "scripts": {
     "build": "npm run build --workspaces --if-present",
+    "dev": "concurrently -n api,web -c green,cyan \"npm:dev:api\" \"npm:dev:web\"",
+    "dev:all": "concurrently -n api,worker,web -c green,yellow,cyan \"npm:dev:api\" \"npm:dev:worker\" \"npm:dev:web\"",
     "dev:web": "npm run dev --workspace apps/web",
     "dev:api": "npm run dev --workspace apps/api",
     "dev:worker": "npm run worker --workspace apps/api",
@@ -17,5 +19,8 @@
   },
   "engines": {
     "node": ">=20"
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.1"
   }
 }

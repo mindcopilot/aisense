@@ -9,6 +9,7 @@ import type {
   Look,
 } from "@looma/shared";
 import { query } from "../pool.js";
+import { toIso } from "../util.js";
 
 interface BatchRow {
   id: string;
@@ -43,7 +44,7 @@ function toBatch(row: BatchRow): GenerationBatch {
     count: row.count,
     status: row.status,
     workflowId: row.workflow_id,
-    createdAt: row.created_at.toISOString(),
+    createdAt: toIso(row.created_at),
   };
 }
 
@@ -60,7 +61,7 @@ function toShot(row: ShotRow): Shot {
     width: row.width,
     imageUrl: row.image_url,
     seed: row.seed,
-    createdAt: row.created_at.toISOString(),
+    createdAt: toIso(row.created_at),
   };
 }
 

@@ -6,6 +6,7 @@
  */
 import { generationRepository } from "../db/repositories/generationRepository.js";
 import { projectRepository } from "../db/repositories/projectRepository.js";
+import { models } from "../llm/models.js";
 import type { Look } from "@looma/shared";
 
 /**
@@ -19,7 +20,9 @@ export async function renderShot(input: {
 }): Promise<{ imageUrl: string; seed: number }> {
   await new Promise((r) => setTimeout(r, 1500));
   const seed = Math.floor(Math.random() * 99999);
-  const imageUrl = `looma://shots/${input.shotId}?look=${input.look}&seed=${seed}`;
+  const imageUrl =
+    `looma://shots/${input.shotId}` +
+    `?model=${models.imageModelId}&look=${input.look}&seed=${seed}`;
   await generationRepository.completeShot(input.shotId, imageUrl, seed);
   return { imageUrl, seed };
 }

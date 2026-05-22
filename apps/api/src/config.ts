@@ -28,7 +28,16 @@ export const config = {
 
   llm: {
     anthropicApiKey: process.env.ANTHROPIC_API_KEY ?? "",
-    model: process.env.LLM_MODEL ?? "claude-sonnet-4-6",
+    /** Whether a real LLM provider is configured. */
+    get live(): boolean {
+      return Boolean(process.env.ANTHROPIC_API_KEY);
+    },
+    /** Reasoning model — drives the AI art director. */
+    chatModel: process.env.LLM_CHAT_MODEL ?? "claude-sonnet-4-6",
+    /** Fast model — short utility calls (captions, titles). */
+    fastModel: process.env.LLM_FAST_MODEL ?? "claude-haiku-4-5-20251001",
+    /** Image model — photoshoot rendering (simulated in this build). */
+    imageModel: process.env.LLM_IMAGE_MODEL ?? "looma-director-v3",
   },
 
   langfuse: {

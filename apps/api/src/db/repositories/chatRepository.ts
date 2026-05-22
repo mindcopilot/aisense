@@ -3,6 +3,7 @@
  */
 import type { ChatMessage, ChatRole, DirectionProposal } from "@looma/shared";
 import { query } from "../pool.js";
+import { toIso } from "../util.js";
 
 interface ChatRow {
   id: string;
@@ -20,7 +21,7 @@ function toMessage(row: ChatRow): ChatMessage {
     projectId: row.project_id,
     role: row.role,
     text: row.text,
-    createdAt: row.created_at.toISOString(),
+    createdAt: toIso(row.created_at),
   };
   if (row.proposals) message.proposals = row.proposals;
   if (row.batch_id) message.batchId = row.batch_id;
