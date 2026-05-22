@@ -5,6 +5,9 @@ import type {
   ChatMessage,
   CreateProjectRequest,
   SendMessageResponse,
+  XhsPost,
+  PostTone,
+  GeneratePostResponse,
 } from "@looma/shared";
 
 const BASE_URL = import.meta.env.VITE_API_BASE_URL ?? "http://localhost:4000";
@@ -42,5 +45,15 @@ export const api = {
     request<SendMessageResponse>(`/studio/${projectId}/messages`, {
       method: "POST",
       body: JSON.stringify({ text }),
+    }),
+
+  // 生文 — 小红书 content generation.
+  listPosts: (projectId: string) =>
+    request<XhsPost[]>(`/content/${projectId}/posts`),
+
+  generatePost: (projectId: string, brief: string, tone: PostTone) =>
+    request<GeneratePostResponse>(`/content/${projectId}/posts`, {
+      method: "POST",
+      body: JSON.stringify({ brief, tone }),
     }),
 };

@@ -95,6 +95,49 @@ export interface CreateProjectRequest {
   subtitle?: string;
 }
 
+// ---------- Content generation (生文 · 小红书) ----------
+
+export type PostTone = "literary" | "lively" | "professional";
+
+export interface XhsValidationIssue {
+  level: "error" | "warning";
+  field: "title" | "body" | "tags";
+  message: string;
+}
+
+/** Result of linting a draft against the 小红书 publishing spec. */
+export interface XhsValidation {
+  ok: boolean;
+  titleLength: number;
+  bodyLength: number;
+  tagCount: number;
+  issues: XhsValidationIssue[];
+}
+
+/** A 小红书-format post ("笔记") generated for a project. */
+export interface XhsPost {
+  id: string;
+  projectId: string;
+  brief: string;
+  tone: PostTone;
+  title: string;
+  body: string;
+  tags: string[];
+  coverTip: string;
+  validation: XhsValidation;
+  createdAt: string;
+}
+
+export interface GeneratePostRequest {
+  /** Free-form brief: product, selling points, audience, tone hints. */
+  brief: string;
+  tone?: PostTone;
+}
+
+export interface GeneratePostResponse {
+  post: XhsPost;
+}
+
 export interface ApiError {
   error: string;
 }
