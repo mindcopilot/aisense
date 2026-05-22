@@ -1,23 +1,47 @@
 // 生文 — 小红书笔记生成器.
-// Left: brief + tone form. Right: generated 笔记 with spec-compliance linting.
+// Left: vertical + angle + brief form. Right: generated 笔记 with spec linting.
 import { useEffect, useState } from "react";
-import type { PostTone, XhsPost, XhsValidationIssue } from "@looma/shared";
+import type {
+  AiAngle,
+  PostTone,
+  PostVertical,
+  XhsPost,
+  XhsValidationIssue,
+} from "@looma/shared";
 import { Icons } from "../components/Icons";
 import { api } from "../lib/apiClient";
 
 const PROJECT_ID = "proj-linen";
 
-const TONES: { key: PostTone; label: string; hint: string }[] = [
-  { key: "literary", label: "文学", hint: "克制 · 画面感" },
-  { key: "lively", label: "活泼", hint: "亲和 · 像朋友安利" },
-  { key: "professional", label: "专业", hint: "理性 · 测评感" },
+const VERTICALS: { key: PostVertical; label: string; hint: string }[] = [
+  { key: "ai_tech", label: "AI · 科技", hint: "AI 自媒体" },
+  { key: "ecommerce", label: "电商种草", hint: "好物笔记" },
 ];
 
+const ANGLES: { key: AiAngle; label: string; hint: string }[] = [
+  { key: "tutorial", label: "教程实操", hint: "手把手 · 可复现" },
+  { key: "review", label: "工具测评", hint: "横向对比 · 选型" },
+  { key: "news", label: "资讯快讯", hint: "时效 · 三要点" },
+  { key: "opinion", label: "深度观点", hint: "判断 · 有支撑" },
+];
+
+const TONES: { key: PostTone; label: string }[] = [
+  { key: "professional", label: "专业" },
+  { key: "lively", label: "活泼" },
+  { key: "literary", label: "文学" },
+];
+
+const DEFAULT_BRIEF: Record<PostVertical, string> = {
+  ai_tech:
+    "Claude Code 多 Agent 工作流：用子 Agent 并行做代码检索与审查，面向想用 AI 提效的开发者",
+  ecommerce: "亚麻衬衫 · 米白 · 春季新品，主打透气垂坠、东方面孔模特、清晨自然光",
+};
+
 export function Copywriter() {
-  const [brief, setBrief] = useState(
-    "亚麻衬衫 · 米白 · 春季新品，主打透气垂坠、东方面孔模特、清晨自然光",
-  );
-  const [tone, setTone] = useState<PostTone>("literary");
+  const [vertical, setVertical] = useState<PostVertical>("ai_tech");
+  const [angle, setAngle] = useState<AiAngle>("tutorial");
+  const [tone, setTone] = useState<PostTone>("professional");
+  const [brief, setBrief] = useState(DEFAULT_BRIEF.ai_tech);
   const [posts, setPosts] = useState<XhsPost[]>([]);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -26,12 +50,23 @@ export function Copywriter() {
     api.listPosts(PROJECT_ID).then(setPosts).catch(() => setPosts([]));
   }, []);
 
+  function switchVertical(next: PostVertical) {
+    setVertical(next);
+    setTone(next === "ai_tech" ? "professional" : "literary");
+    setBrief(DEFAULT_BRIEF[next]);
+  }
+
   async function generate() {
     if (!brief.trim() || busy) return;
     setBusy(true);
     setError(null);
     try {
-      const { post } = await api.generatePost(PROJECT_ID, brief, tone);
+      const { post } = await api.generatePost(PROJECT_ID, {
+        brief,
+        vertical,
+        tone,
+        ...(vertical === "ai_tech" ? { angle } : {}),
+      });
       setPosts((p) => [post, ...p]);
     } catch (e) {
       setError(e instanceof Error ? e.message : "生成失败");
@@ -39,6 +74,8 @@ export function Copywriter() {
       setBusy(false);
     }
   }
+
+  const isAi = vertical === "ai_tech";
 
   return (
     <div className="copy">
@@ -54,12 +91,50 @@ export function Copywriter() {
         </div>
 
         <div className="cw-form">
-          <div className="eyebrow">产品与卖点</div>
+          <div className="eyebrow">内容领域</div>
+          <div className="cw-tones cw-verticals">
+            {VERTICALS.map((v) => (
+              <button
+                key={v.key}
+                className={"cw-tone " + (vertical === v.key ? "is-on" : "")}
+                onClick={() => switchVertical(v.key)}
+              >
+                <span className="cw-tone-l">{v.label}</span>
+                <span className="cw-tone-h">{v.hint}</span>
+              </button>
+            ))}
+          </div>
+
+          {isAi && (
+            <>
+              <div className="eyebrow" style={{ marginTop: 6 }}>内容体裁</div>
+              <div className="cw-angles">
+                {ANGLES.map((a) => (
+                  <button
+                    key={a.key}
+                    className={"cw-tone " + (angle === a.key ? "is-on" : "")}
+                    onClick={() => setAngle(a.key)}
+                  >
+                    <span className="cw-tone-l">{a.label}</span>
+                    <span className="cw-tone-h">{a.hint}</span>
+                  </button>
+                ))}
+              </div>
+            </>
+          )}
+
+          <div className="eyebrow" style={{ marginTop: 6 }}>
+            {isAi ? "主题 · 工具 · 要点" : "产品与卖点"}
+          </div>
           <textarea
             className="cw-brief"
             value={brief}
             onChange={(e) => setBrief(e.target.value)}
-            placeholder="例：亚麻衬衫 · 米白 · 主打透气垂坠、东方面孔模特、清晨自然光…"
+            placeholder={
+              isAi
+                ? "例：某 AI 工具 / 模型 / 工作流，核心能力、对读者的价值…"
+                : "例：亚麻衬衫 · 米白 · 主打透气垂坠…"
+            }
             rows={5}
           />
 
@@ -68,11 +143,10 @@ export function Copywriter() {
             {TONES.map((t) => (
               <button
                 key={t.key}
-                className={"cw-tone " + (tone === t.key ? "is-on" : "")}
+                className={"cw-tone cw-tone-sm " + (tone === t.key ? "is-on" : "")}
                 onClick={() => setTone(t.key)}
               >
                 <span className="cw-tone-l">{t.label}</span>
-                <span className="cw-tone-h">{t.hint}</span>
               </button>
             ))}
           </div>
@@ -85,13 +159,24 @@ export function Copywriter() {
 
           <div className="cw-spec">
             <div className="cw-spec-h">
-              <Icons.Bulb /> 小红书发文规范
+              <Icons.Bulb /> {isAi ? "AI 自媒体生文要点" : "小红书发文规范"}
             </div>
             <ul>
-              <li>标题 8–20 字，首句即钩子</li>
-              <li>正文 120–1000 字，口语化、分段、emoji 适量</li>
-              <li>话题标签 3–10 个，均以 # 开头</li>
-              <li>规避绝对化用语（最佳 / 第一 / 100% 等），避免限流</li>
+              {isAi ? (
+                <>
+                  <li>信息密度高、可信、可复现，术语用准不滥用</li>
+                  <li>突出对读者的实际价值，拒绝标题党与夸大</li>
+                  <li>教程给可照做步骤；测评给克制结论</li>
+                  <li>标题 ≤20 字，标签 3–10 个，规避绝对化用语</li>
+                </>
+              ) : (
+                <>
+                  <li>标题 8–20 字，首句即钩子</li>
+                  <li>正文 120–1000 字，口语化、分段、emoji 适量</li>
+                  <li>话题标签 3–10 个，均以 # 开头</li>
+                  <li>规避绝对化用语（最佳 / 第一 / 100% 等）</li>
+                </>
+              )}
             </ul>
           </div>
         </div>
@@ -108,7 +193,7 @@ export function Copywriter() {
           {posts.length === 0 && (
             <div className="cw-empty">
               <Icons.Note />
-              <p>填写左侧产品卖点，让 AI 写手产出符合小红书规范的笔记。</p>
+              <p>选择内容领域与体裁，填写要点，让 AI 写手产出符合小红书规范的笔记。</p>
             </div>
           )}
 
@@ -120,6 +205,17 @@ export function Copywriter() {
     </div>
   );
 }
+
+const VERTICAL_LABEL: Record<PostVertical, string> = {
+  ai_tech: "AI · 科技",
+  ecommerce: "电商种草",
+};
+const ANGLE_LABEL: Record<AiAngle, string> = {
+  tutorial: "教程实操",
+  review: "工具测评",
+  news: "资讯快讯",
+  opinion: "深度观点",
+};
 
 function PostCard({ post }: { post: XhsPost }) {
   const v = post.validation;
@@ -134,6 +230,11 @@ function PostCard({ post }: { post: XhsPost }) {
       </div>
 
       <div className="cw-post-meta">
+        <span className="cw-kind">
+          {VERTICAL_LABEL[post.vertical]}
+          {post.angle ? ` · ${ANGLE_LABEL[post.angle]}` : ""}
+        </span>
+        <span>·</span>
         <span>标题 {v.titleLength}/20</span>
         <span>·</span>
         <span>正文 {v.bodyLength}/1000</span>

@@ -2368,3 +2368,15 @@ h4 { font-size: 13px; font-weight: 600; }
   text-transform: uppercase;
   letter-spacing: 0.04em;
 }
+
+/* 生文 — vertical / angle selectors */
+.cw-verticals { grid-template-columns: repeat(2, 1fr); }
+.cw-angles { display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px; }
+.cw-tone-sm { align-items: center; padding: 7px 6px; }
+.cw-tone-sm .cw-tone-l { font-size: 12.5px; }
+.cw-kind {
+  font-family: var(--sans);
+  font-weight: 600;
+  color: var(--accent-deep);
+  letter-spacing: 0;
+}

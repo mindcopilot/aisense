@@ -6,7 +6,7 @@ import type {
   CreateProjectRequest,
   SendMessageResponse,
   XhsPost,
-  PostTone,
+  GeneratePostRequest,
   GeneratePostResponse,
 } from "@looma/shared";
 
@@ -51,9 +51,9 @@ export const api = {
   listPosts: (projectId: string) =>
     request<XhsPost[]>(`/content/${projectId}/posts`),
 
-  generatePost: (projectId: string, brief: string, tone: PostTone) =>
+  generatePost: (projectId: string, body: GeneratePostRequest) =>
     request<GeneratePostResponse>(`/content/${projectId}/posts`, {
       method: "POST",
-      body: JSON.stringify({ brief, tone }),
+      body: JSON.stringify(body),
     }),
 };

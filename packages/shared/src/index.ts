@@ -99,6 +99,12 @@ export interface CreateProjectRequest {
 
 export type PostTone = "literary" | "lively" | "professional";
 
+/** Content vertical — which domain the copywriter writes for. */
+export type PostVertical = "ecommerce" | "ai_tech";
+
+/** Content angle for the AI/科技 vertical. */
+export type AiAngle = "tutorial" | "review" | "news" | "opinion";
+
 export interface XhsValidationIssue {
   level: "error" | "warning";
   field: "title" | "body" | "tags";
@@ -119,6 +125,9 @@ export interface XhsPost {
   id: string;
   projectId: string;
   brief: string;
+  vertical: PostVertical;
+  /** Content angle — only meaningful for the ai_tech vertical. */
+  angle: AiAngle | null;
   tone: PostTone;
   title: string;
   body: string;
@@ -129,8 +138,11 @@ export interface XhsPost {
 }
 
 export interface GeneratePostRequest {
-  /** Free-form brief: product, selling points, audience, tone hints. */
+  /** Free-form brief: product / tool / topic, key points, audience. */
   brief: string;
+  vertical?: PostVertical;
+  /** Required when vertical is ai_tech; ignored otherwise. */
+  angle?: AiAngle;
   tone?: PostTone;
 }
 
