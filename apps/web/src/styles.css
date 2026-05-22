@@ -2202,3 +2202,169 @@ h4 { font-size: 13px; font-weight: 600; }
   border: 1px solid var(--line); background: var(--surface-2);
   color: var(--ink); font-size: 12.5px; outline: none;
 }
+
+/* ============ COPYWRITER · 生文 ============ */
+.copy {
+  display: grid;
+  grid-template-columns: var(--side-w) 1fr;
+  height: 100%;
+  overflow: hidden;
+}
+
+.cw-side {
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-tint);
+  border-right: 1px solid var(--line);
+  min-height: 0;
+  overflow-y: auto;
+}
+.cw-form {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 16px 18px 20px;
+}
+.cw-brief {
+  width: 100%;
+  resize: vertical;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--surface);
+  color: var(--ink);
+  font: inherit;
+  font-size: 13px;
+  line-height: 1.55;
+  padding: 10px 12px;
+  outline: none;
+}
+.cw-brief:focus { border-color: var(--ink-3); }
+
+.cw-tones { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+.cw-tone {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 8px 6px;
+  border-radius: 10px;
+  background: var(--surface);
+  border: 1.5px solid var(--line);
+  text-align: left;
+  color: var(--ink);
+}
+.cw-tone:hover { border-color: var(--ink-3); }
+.cw-tone.is-on { border-color: var(--accent); background: var(--accent-soft); }
+.cw-tone-l { font-size: 13px; font-weight: 600; }
+.cw-tone-h { font-size: 10px; color: var(--ink-3); }
+
+.cw-gen { justify-content: center; margin-top: 6px; }
+.cw-gen:disabled { opacity: 0.7; cursor: default; }
+.cw-error {
+  font-size: 12px;
+  color: #C0392B;
+  background: rgba(192, 57, 43, 0.08);
+  border-radius: 8px;
+  padding: 8px 10px;
+}
+
+.cw-spec {
+  margin-top: 8px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+}
+.cw-spec-h {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 12px; font-weight: 600; color: var(--ink);
+  margin-bottom: 8px;
+}
+.cw-spec-h svg { width: 15px; height: 15px; color: var(--accent); }
+.cw-spec ul { margin: 0; padding-left: 18px; }
+.cw-spec li { font-size: 11.5px; color: var(--ink-3); line-height: 1.7; }
+
+.cw-main { overflow: auto; min-height: 0; background: var(--bg); }
+.cw-main .dash-pad { max-width: 760px; padding-top: 28px; }
+
+.cw-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 64px 0;
+  color: var(--ink-4);
+}
+.cw-empty svg { width: 34px; height: 34px; }
+.cw-empty p { font-size: 13px; max-width: 320px; text-align: center; }
+
+.cw-post {
+  background: var(--surface);
+  border-radius: 16px;
+  box-shadow: var(--shadow-sm);
+  padding: 22px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.cw-post-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+}
+.cw-post-title { font-size: 21px; font-weight: 600; line-height: 1.3; }
+.cw-badge {
+  flex: none;
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 4px 10px;
+  border-radius: var(--r-pill);
+  font-size: 11.5px; font-weight: 600;
+}
+.cw-badge svg { width: 13px; height: 13px; }
+.cw-badge.is-ok { background: var(--accent-soft); color: var(--accent-deep); }
+.cw-badge.is-bad { background: rgba(192, 57, 43, 0.1); color: #C0392B; }
+
+.cw-post-meta {
+  display: flex; gap: 6px;
+  font-family: var(--mono);
+  font-size: 10.5px;
+  color: var(--ink-3);
+}
+.cw-post-body {
+  white-space: pre-wrap;
+  font-size: 13.5px;
+  line-height: 1.7;
+  color: var(--ink-2);
+  margin: 0;
+}
+.cw-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+.cw-cover {
+  display: flex; align-items: center; gap: 8px;
+  padding: 9px 12px;
+  border-radius: 10px;
+  background: var(--surface-2);
+  font-size: 12px;
+  color: var(--ink-3);
+}
+.cw-cover svg { width: 15px; height: 15px; flex: none; color: var(--accent); }
+
+.cw-issues { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 6px; }
+.cw-issue {
+  font-size: 12px;
+  line-height: 1.5;
+  padding: 8px 10px;
+  border-radius: 8px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: baseline;
+}
+.cw-issue-error { background: rgba(192, 57, 43, 0.08); color: #C0392B; }
+.cw-issue-warning { background: rgba(184, 137, 58, 0.1); color: var(--gold); }
+.cw-issue-tag {
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}

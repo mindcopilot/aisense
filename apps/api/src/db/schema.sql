@@ -54,3 +54,20 @@ CREATE TABLE IF NOT EXISTS shots (
 );
 CREATE INDEX IF NOT EXISTS idx_shots_batch ON shots (batch_id);
 CREATE INDEX IF NOT EXISTS idx_shots_project ON shots (project_id);
+
+-- 小红书 generated posts (生文 module).
+CREATE TABLE IF NOT EXISTS xhs_posts (
+  id          TEXT PRIMARY KEY,
+  project_id  TEXT NOT NULL REFERENCES projects(id) ON DELETE CASCADE,
+  brief       TEXT NOT NULL,
+  tone        TEXT NOT NULL DEFAULT 'literary'
+              CHECK (tone IN ('literary', 'lively', 'professional')),
+  title       TEXT NOT NULL,
+  body        TEXT NOT NULL,
+  tags        JSONB NOT NULL DEFAULT '[]'::jsonb,
+  cover_tip   TEXT NOT NULL DEFAULT '',
+  validation  JSONB NOT NULL DEFAULT '{}'::jsonb,
+  created_at  TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+CREATE INDEX IF NOT EXISTS idx_xhs_posts_project
+  ON xhs_posts (project_id, created_at);

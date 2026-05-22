@@ -100,4 +100,8 @@ export const Icons = {
   Pin: () => (
     <I d={<><path d="M10 2.5 L14 6.5 L11.5 9 L13 12.5 L10 11 L7 12.5 L8.5 9 L6 6.5 Z" /><path d="M10 11 V17.5" /></>} />
   ),
+  Note: () => (
+    <I d={<><path d="M4.5 2.5 H12 L15.5 6 V17.5 H4.5 Z" /><path d="M11.5 2.5 V6 H15.5" /><path d="M7 10 H13 M7 13 H11" /></>} />
+  ),
+  Check: () => <I d="M4 10.5 L8 14.5 L16 5.5" stroke={2} />,
 };

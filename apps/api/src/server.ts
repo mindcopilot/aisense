@@ -9,6 +9,7 @@ import { initDatabase } from "./db/init.js";
 import { closePool } from "./db/pool.js";
 import { projectRoutes } from "./modules/projects/projectRoutes.js";
 import { studioRoutes } from "./modules/studio/studioRoutes.js";
+import { contentRoutes } from "./modules/content/contentRoutes.js";
 import { errorMiddleware } from "./http/errorMiddleware.js";
 import { shutdownObservability } from "./llm/observability.js";
 
@@ -22,6 +23,7 @@ async function main(): Promise<void> {
   app.get("/health", (_req, res) => res.json({ status: "ok" }));
   app.use("/api/projects", projectRoutes);
   app.use("/api/studio", studioRoutes);
+  app.use("/api/content", contentRoutes);
   app.use(errorMiddleware);
 
   const server = app.listen(config.port, () => {

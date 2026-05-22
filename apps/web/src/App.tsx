@@ -1,4 +1,4 @@
-// Top-level shell — routing between the five Looma views + tweaks.
+// Top-level shell — routing between the six Looma views + tweaks.
 import { useState } from "react";
 import { Sidebar, TopBar } from "./components/Sidebar";
 import { TweaksPanel } from "./components/TweaksPanel";
@@ -8,15 +8,17 @@ import { Dashboard } from "./views/Dashboard";
 import { Studio } from "./views/Studio";
 import { Editor } from "./views/Editor";
 import { VideoAgent } from "./views/VideoAgent";
+import { Copywriter } from "./views/Copywriter";
 import { Assets } from "./views/Assets";
 
-export type Route = "inspire" | "studio" | "editor" | "video" | "assets";
+export type Route = "inspire" | "studio" | "editor" | "video" | "copy" | "assets";
 
 const SECTION_LABEL: Record<Route, string> = {
   inspire: "灵感",
   studio: "工作室",
   editor: "编辑器",
   video: "视频代理",
+  copy: "生文",
   assets: "素材库",
 };
 
@@ -44,6 +46,7 @@ export function App() {
         {route === "studio" && <Studio />}
         {route === "editor" && <Editor />}
         {route === "video" && <VideoAgent />}
+        {route === "copy" && <Copywriter />}
         {route === "assets" && <Assets />}
       </div>
 

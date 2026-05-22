@@ -8,6 +8,7 @@ const NAV: { key: Route; icon: JSX.Element; label: string }[] = [
   { key: "studio", icon: <Icons.Studio />, label: "工作室" },
   { key: "editor", icon: <Icons.Editor />, label: "编辑器" },
   { key: "video", icon: <Icons.Video />, label: "视频" },
+  { key: "copy", icon: <Icons.Note />, label: "生文" },
   { key: "assets", icon: <Icons.Assets />, label: "素材库" },
 ];
 
