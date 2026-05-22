@@ -1,0 +1,21 @@
+{
+  "name": "aisense",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Looma · 露玛 — AI 商拍工作室",
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ],
+  "scripts": {
+    "build": "npm run build --workspaces --if-present",
+    "dev:web": "npm run dev --workspace apps/web",
+    "dev:api": "npm run dev --workspace apps/api",
+    "dev:worker": "npm run worker --workspace apps/api",
+    "db:migrate": "npm run db:migrate --workspace apps/api",
+    "typecheck": "npm run typecheck --workspaces --if-present"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

@@ -1,0 +1,52 @@
+# Local infrastructure for Looma: PostgreSQL + Temporal.
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: looma
+      POSTGRES_PASSWORD: looma
+      POSTGRES_DB: looma
+    ports:
+      - "5432:5432"
+    volumes:
+      - looma-pg:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U looma"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  temporal-postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: temporal
+      POSTGRES_PASSWORD: temporal
+      POSTGRES_DB: temporal
+    volumes:
+      - temporal-pg:/var/lib/postgresql/data
+
+  temporal:
+    image: temporalio/auto-setup:1.25.0
+    depends_on:
+      - temporal-postgres
+    environment:
+      DB: postgres12
+      DB_PORT: 5432
+      POSTGRES_USER: temporal
+      POSTGRES_PWD: temporal
+      POSTGRES_SEEDS: temporal-postgres
+    ports:
+      - "7233:7233"
+
+  temporal-ui:
+    image: temporalio/ui:2.31.2
+    depends_on:
+      - temporal
+    environment:
+      TEMPORAL_ADDRESS: temporal:7233
+    ports:
+      - "8233:8080"
+
+volumes:
+  looma-pg:
+  temporal-pg:
