@@ -150,6 +150,77 @@ export interface GeneratePostResponse {
   post: XhsPost;
 }
 
+// ---------- Marketing automation (营销 pipeline) ----------
+
+export type CampaignStatus =
+  | "queued" | "planning" | "rendering" | "succeeded" | "failed";
+
+/** Structured plan the planner derives from a one-sentence brief. */
+export interface CampaignPlan {
+  theme: string;
+  imageShots: { look: Look; pose: string }[];
+  videoConcept: string;
+  videoClips: { label: string; motion: string }[];
+  article: {
+    brief: string;
+    vertical: PostVertical;
+    angle: AiAngle | null;
+    tone: PostTone;
+  };
+}
+
+export interface CampaignVideo {
+  url: string;
+  durationSec: number;
+  clips: { label: string; motion: string; durationSec: number }[];
+}
+
+export interface CampaignArticle {
+  title: string;
+  body: string;
+  tags: string[];
+  coverTip: string;
+  validation: XhsValidation;
+}
+
+/** One run of the marketing pipeline — its inputs and all produced assets. */
+export interface Campaign {
+  id: string;
+  brief: string;
+  status: CampaignStatus;
+  /** Set when the run was triggered by a schedule. */
+  scheduleId: string | null;
+  workflowId: string | null;
+  plan: CampaignPlan | null;
+  imageUrls: string[];
+  video: CampaignVideo | null;
+  article: CampaignArticle | null;
+  error: string | null;
+  createdAt: string;
+  completedAt: string | null;
+}
+
+/** How a recurring trigger is driven. */
+export type ScheduleMode = "temporal" | "in-process";
+
+export interface CampaignSchedule {
+  id: string;
+  brief: string;
+  intervalMinutes: number;
+  mode: ScheduleMode;
+  active: boolean;
+  createdAt: string;
+}
+
+export interface RunCampaignRequest {
+  brief: string;
+}
+
+export interface CreateScheduleRequest {
+  brief: string;
+  intervalMinutes: number;
+}
+
 export interface ApiError {
   error: string;
 }

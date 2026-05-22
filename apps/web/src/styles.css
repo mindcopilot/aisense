@@ -2380,3 +2380,138 @@ h4 { font-size: 13px; font-weight: 600; }
   color: var(--accent-deep);
   letter-spacing: 0;
 }
+
+/* ============ MARKETING · 营销自动化 ============ */
+.market {
+  display: grid;
+  grid-template-columns: var(--side-w) 1fr;
+  height: 100%;
+  overflow: hidden;
+}
+.mk-side {
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-tint);
+  border-right: 1px solid var(--line);
+  min-height: 0;
+  overflow-y: auto;
+}
+
+.mk-pipeline {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 10px;
+  border-radius: 10px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+}
+.mk-pipeline svg { width: 14px; height: 14px; color: var(--ink-4); }
+.mk-step {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ink-2);
+}
+.mk-step svg { width: 14px; height: 14px; color: var(--accent); }
+
+.mk-sched-form { display: flex; gap: 8px; align-items: center; }
+.mk-interval {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--ink-2);
+}
+.mk-interval input {
+  width: 56px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--surface);
+  color: var(--ink);
+  padding: 6px 8px;
+  font: inherit;
+  outline: none;
+}
+.mk-sched-form .btn { flex: 1; justify-content: center; }
+
+.mk-schedules { display: flex; flex-direction: column; gap: 6px; margin-top: 4px; }
+.mk-sched {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+}
+.mk-sched-body { flex: 1; min-width: 0; }
+.mk-sched-brief {
+  font-size: 12.5px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.mk-sched-meta {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--ink-3);
+  margin-top: 2px;
+}
+
+.cw-badge.is-run { background: var(--surface-3); color: var(--ink-2); }
+.mk-campaign { gap: 14px; }
+
+.mk-asset { display: flex; flex-direction: column; gap: 8px; }
+.mk-asset-h {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+.mk-asset-h svg { width: 14px; height: 14px; color: var(--accent); }
+
+.mk-images { display: flex; flex-wrap: wrap; gap: 8px; }
+
+.mk-clips { display: flex; flex-direction: column; gap: 4px; }
+.mk-clip {
+  display: grid;
+  grid-template-columns: 92px 1fr auto;
+  gap: 10px;
+  align-items: center;
+  padding: 7px 10px;
+  border-radius: 8px;
+  background: var(--surface-2);
+}
+.mk-clip-motion {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--accent);
+  letter-spacing: 0.04em;
+}
+.mk-clip-label { font-size: 12.5px; }
+.mk-clip-dur { font-family: var(--mono); font-size: 10.5px; color: var(--ink-3); }
+
+.mk-article {
+  padding: 14px 16px;
+  border-radius: 12px;
+  background: var(--surface-2);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.mk-article-title { font-size: 16px; font-weight: 600; }
+.mk-article-body {
+  white-space: pre-wrap;
+  font-size: 13px;
+  line-height: 1.7;
+  color: var(--ink-2);
+  margin: 0;
+}

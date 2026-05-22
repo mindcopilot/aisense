@@ -104,4 +104,7 @@ export const Icons = {
     <I d={<><path d="M4.5 2.5 H12 L15.5 6 V17.5 H4.5 Z" /><path d="M11.5 2.5 V6 H15.5" /><path d="M7 10 H13 M7 13 H11" /></>} />
   ),
   Check: () => <I d="M4 10.5 L8 14.5 L16 5.5" stroke={2} />,
+  Campaign: () => (
+    <I d={<><circle cx="10" cy="10" r="7.5" /><path d="M8.2 6.6 L13.6 10 L8.2 13.4 Z" /></>} />
+  ),
 };

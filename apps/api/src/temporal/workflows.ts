@@ -1,5 +1,6 @@
 /**
- * Temporal workflows — deterministic orchestration of a photoshoot batch.
+ * Temporal workflows — deterministic orchestration of the photoshoot batch
+ * and the marketing-automation pipeline.
  *
  * This file runs inside the Temporal workflow sandbox: it must stay
  * deterministic and may only reach the outside world through activity proxies.
@@ -13,6 +14,21 @@ const { renderShot, markBatchGenerating, finishBatch, failShot } =
     startToCloseTimeout: "2 minutes",
     retry: { maximumAttempts: 3 },
   });
+
+// Campaign steps include LLM calls — allow a longer activity window.
+const {
+  openCampaign,
+  markCampaignStatus,
+  planCampaign,
+  renderCampaignImages,
+  renderCampaignVideo,
+  writeCampaignArticle,
+  finalizeCampaign,
+  failCampaign,
+} = proxyActivities<typeof activities>({
+  startToCloseTimeout: "5 minutes",
+  retry: { maximumAttempts: 3 },
+});
 
 export interface PhotoshootInput {
   batchId: string;
@@ -52,4 +68,43 @@ export async function photoshootWorkflow(input: PhotoshootInput): Promise<void> 
   });
 
   void anyFailed; // partial failure is acceptable; surfaced via shot status
+}
+
+export interface CampaignWorkflowInput {
+  /** Provided for API-triggered runs; omitted for scheduled runs. */
+  campaignId?: string;
+  brief: string;
+  /** Set when this run was triggered by a recurring schedule. */
+  scheduleId?: string;
+}
+
+/**
+ * The marketing pipeline: one sentence → plan → images + video + article.
+ *
+ * The three render steps run concurrently; a failure in any of them marks the
+ * whole campaign failed (and, under Temporal, the activity is retried first).
+ */
+export async function marketingCampaignWorkflow(
+  input: CampaignWorkflowInput,
+): Promise<void> {
+  const campaignId =
+    input.campaignId ??
+    (await openCampaign({ brief: input.brief, scheduleId: input.scheduleId ?? null }));
+
+  try {
+    await markCampaignStatus({ campaignId, status: "planning" });
+    const plan = await planCampaign({ campaignId, brief: input.brief });
+
+    await markCampaignStatus({ campaignId, status: "rendering" });
+    const [imageUrls, video, article] = await Promise.all([
+      renderCampaignImages({ campaignId, plan }),
+      renderCampaignVideo({ plan }),
+      writeCampaignArticle({ campaignId, plan }),
+    ]);
+
+    await finalizeCampaign({ campaignId, imageUrls, video, article });
+  } catch (err) {
+    await failCampaign({ campaignId, error: String(err) });
+    throw err;
+  }
 }

@@ -9,9 +9,11 @@ import { Studio } from "./views/Studio";
 import { Editor } from "./views/Editor";
 import { VideoAgent } from "./views/VideoAgent";
 import { Copywriter } from "./views/Copywriter";
+import { Marketing } from "./views/Marketing";
 import { Assets } from "./views/Assets";
 
-export type Route = "inspire" | "studio" | "editor" | "video" | "copy" | "assets";
+export type Route =
+  | "inspire" | "studio" | "editor" | "video" | "copy" | "market" | "assets";
 
 const SECTION_LABEL: Record<Route, string> = {
   inspire: "灵感",
@@ -19,6 +21,7 @@ const SECTION_LABEL: Record<Route, string> = {
   editor: "编辑器",
   video: "视频代理",
   copy: "生文",
+  market: "营销自动化",
   assets: "素材库",
 };
 
@@ -47,6 +50,7 @@ export function App() {
         {route === "editor" && <Editor />}
         {route === "video" && <VideoAgent />}
         {route === "copy" && <Copywriter />}
+        {route === "market" && <Marketing />}
         {route === "assets" && <Assets />}
       </div>
 

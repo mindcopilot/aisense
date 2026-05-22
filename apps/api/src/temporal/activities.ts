@@ -49,3 +49,7 @@ export async function finishBatch(input: {
 export async function failShot(shotId: string): Promise<void> {
   await generationRepository.failShot(shotId);
 }
+
+// Campaign activities are registered alongside the photoshoot ones so a single
+// worker drives both the studio batches and the marketing pipeline.
+export * from "./campaignActivities.js";
