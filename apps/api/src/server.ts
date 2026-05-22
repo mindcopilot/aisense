@@ -10,11 +10,15 @@ import { closePool } from "./db/pool.js";
 import { projectRoutes } from "./modules/projects/projectRoutes.js";
 import { studioRoutes } from "./modules/studio/studioRoutes.js";
 import { contentRoutes } from "./modules/content/contentRoutes.js";
+import { marketingRoutes } from "./modules/marketing/marketingRoutes.js";
+import { marketingService } from "./modules/marketing/marketingService.js";
 import { errorMiddleware } from "./http/errorMiddleware.js";
 import { shutdownObservability } from "./llm/observability.js";
 
 async function main(): Promise<void> {
   await initDatabase();
+  // Re-arm any in-process marketing schedules left active before a restart.
+  await marketingService.resumeSchedules();
 
   const app = express();
   app.use(cors());
@@ -24,6 +28,7 @@ async function main(): Promise<void> {
   app.use("/api/projects", projectRoutes);
   app.use("/api/studio", studioRoutes);
   app.use("/api/content", contentRoutes);
+  app.use("/api/marketing", marketingRoutes);
   app.use(errorMiddleware);
 
   const server = app.listen(config.port, () => {

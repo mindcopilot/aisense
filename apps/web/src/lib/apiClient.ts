@@ -8,6 +8,8 @@ import type {
   XhsPost,
   GeneratePostRequest,
   GeneratePostResponse,
+  Campaign,
+  CampaignSchedule,
 } from "@looma/shared";
 
 const BASE_URL = import.meta.env.VITE_API_BASE_URL ?? "http://localhost:4000";
@@ -21,6 +23,7 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
     const body = (await res.json().catch(() => ({}))) as { error?: string };
     throw new Error(body.error ?? `请求失败 (${res.status})`);
   }
+  if (res.status === 204) return undefined as T;
   return res.json() as Promise<T>;
 }
 
@@ -56,4 +59,24 @@ export const api = {
       method: "POST",
       body: JSON.stringify(body),
     }),
+
+  // 营销自动化 — one-sentence marketing pipeline.
+  listCampaigns: () => request<Campaign[]>("/marketing/campaigns"),
+
+  runCampaign: (brief: string) =>
+    request<Campaign>("/marketing/campaigns", {
+      method: "POST",
+      body: JSON.stringify({ brief }),
+    }),
+
+  listSchedules: () => request<CampaignSchedule[]>("/marketing/schedules"),
+
+  createSchedule: (brief: string, intervalMinutes: number) =>
+    request<CampaignSchedule>("/marketing/schedules", {
+      method: "POST",
+      body: JSON.stringify({ brief, intervalMinutes }),
+    }),
+
+  cancelSchedule: (id: string) =>
+    request<void>(`/marketing/schedules/${id}`, { method: "DELETE" }),
 };

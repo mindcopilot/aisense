@@ -75,3 +75,32 @@ CREATE TABLE IF NOT EXISTS xhs_posts (
 );
 CREATE INDEX IF NOT EXISTS idx_xhs_posts_project
   ON xhs_posts (project_id, created_at);
+
+-- Marketing automation: recurring triggers + pipeline runs.
+CREATE TABLE IF NOT EXISTS campaign_schedules (
+  id               TEXT PRIMARY KEY,
+  brief            TEXT NOT NULL,
+  interval_minutes INTEGER NOT NULL,
+  mode             TEXT NOT NULL DEFAULT 'in-process'
+                   CHECK (mode IN ('temporal', 'in-process')),
+  active           BOOLEAN NOT NULL DEFAULT true,
+  created_at       TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
+CREATE TABLE IF NOT EXISTS campaigns (
+  id           TEXT PRIMARY KEY,
+  brief        TEXT NOT NULL,
+  status       TEXT NOT NULL DEFAULT 'queued'
+               CHECK (status IN ('queued', 'planning', 'rendering', 'succeeded', 'failed')),
+  schedule_id  TEXT REFERENCES campaign_schedules(id) ON DELETE SET NULL,
+  workflow_id  TEXT,
+  plan         JSONB,
+  image_urls   JSONB NOT NULL DEFAULT '[]'::jsonb,
+  video        JSONB,
+  article      JSONB,
+  error        TEXT,
+  created_at   TIMESTAMPTZ NOT NULL DEFAULT now(),
+  completed_at TIMESTAMPTZ
+);
+CREATE INDEX IF NOT EXISTS idx_campaigns_created
+  ON campaigns (created_at DESC);
