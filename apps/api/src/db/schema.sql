@@ -60,6 +60,10 @@ CREATE TABLE IF NOT EXISTS xhs_posts (
   id          TEXT PRIMARY KEY,
   project_id  TEXT NOT NULL REFERENCES projects(id) ON DELETE CASCADE,
   brief       TEXT NOT NULL,
+  vertical    TEXT NOT NULL DEFAULT 'ecommerce'
+              CHECK (vertical IN ('ecommerce', 'ai_tech')),
+  angle       TEXT
+              CHECK (angle IN ('tutorial', 'review', 'news', 'opinion')),
   tone        TEXT NOT NULL DEFAULT 'literary'
               CHECK (tone IN ('literary', 'lively', 'professional')),
   title       TEXT NOT NULL,

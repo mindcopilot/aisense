@@ -1,7 +1,13 @@
 /**
  * 小红书 post data access (生文 module). Pure persistence.
  */
-import type { PostTone, XhsPost, XhsValidation } from "@looma/shared";
+import type {
+  AiAngle,
+  PostTone,
+  PostVertical,
+  XhsPost,
+  XhsValidation,
+} from "@looma/shared";
 import { query } from "../pool.js";
 import { toIso } from "../util.js";
 
@@ -9,6 +15,8 @@ interface PostRow {
   id: string;
   project_id: string;
   brief: string;
+  vertical: PostVertical;
+  angle: AiAngle | null;
   tone: PostTone;
   title: string;
   body: string;
@@ -23,6 +31,8 @@ function toPost(row: PostRow): XhsPost {
     id: row.id,
     projectId: row.project_id,
     brief: row.brief,
+    vertical: row.vertical,
+    angle: row.angle,
     tone: row.tone,
     title: row.title,
     body: row.body,
@@ -38,6 +48,8 @@ export const postRepository = {
     id: string;
     projectId: string;
     brief: string;
+    vertical: PostVertical;
+    angle: AiAngle | null;
     tone: PostTone;
     title: string;
     body: string;
@@ -47,13 +59,16 @@ export const postRepository = {
   }): Promise<XhsPost> {
     const rows = await query<PostRow>(
       `INSERT INTO xhs_posts
-         (id, project_id, brief, tone, title, body, tags, cover_tip, validation)
-       VALUES ($1, $2, $3, $4, $5, $6, $7::jsonb, $8, $9::jsonb)
+         (id, project_id, brief, vertical, angle, tone,
+          title, body, tags, cover_tip, validation)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9::jsonb, $10, $11::jsonb)
        RETURNING *`,
       [
         p.id,
         p.projectId,
         p.brief,
+        p.vertical,
+        p.angle,
         p.tone,
         p.title,
         p.body,
