@@ -13,15 +13,23 @@ export interface Tweaks {
 export const TWEAK_DEFAULTS: Tweaks = {
   dark: false,
   density: "regular",
-  accent: "#00754A",
+  accent: "#0071E3",
 };
 
 const STORAGE_KEY = "looma.tweaks";
 
+/** Retired green accents — migrated to the default if found in storage. */
+const RETIRED_ACCENTS = new Set(["#00754A", "#1E3932"]);
+
 function load(): Tweaks {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
-    if (raw) return { ...TWEAK_DEFAULTS, ...(JSON.parse(raw) as Partial<Tweaks>) };
+    if (raw) {
+      const stored = { ...TWEAK_DEFAULTS, ...(JSON.parse(raw) as Partial<Tweaks>) };
+      const head = Array.isArray(stored.accent) ? stored.accent[0] : stored.accent;
+      if (RETIRED_ACCENTS.has(head)) stored.accent = TWEAK_DEFAULTS.accent;
+      return stored;
+    }
   } catch {
     /* ignore corrupt storage */
   }

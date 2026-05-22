@@ -2,24 +2,24 @@
 /* Design tokens + base styles */
 
 :root {
-  /* === Light theme — Apple-style cool palette === */
-  --bg: #F5F5F7;            /* Apple's signature surface gray */
-  --bg-tint: #F2F2F4;
+  /* === Light theme — white-based, Apple-style cool palette === */
+  --bg: #FFFFFF;            /* clean white base */
+  --bg-tint: #F7F7F8;       /* faint off-white for rails / side panels */
   --surface: #FFFFFF;
-  --surface-2: #FAFAFC;
-  --surface-3: #ECECEF;
+  --surface-2: #FAFAFB;
+  --surface-3: #F0F0F2;
   --ink: #1D1D1F;           /* Apple near-black */
   --ink-2: #424245;
   --ink-3: #6E6E73;         /* Apple secondary text */
   --ink-4: #AEAEB2;         /* Apple tertiary */
-  --line: #D2D2D7;          /* Apple divider */
-  --line-2: #E5E5EA;
-  --accent: #00754A;        /* keep green accent — used sparingly */
-  --accent-soft: #E0F0E8;
-  --accent-deep: #005A39;
-  --sage: #2B5148;
-  --ocean: #2B5148;
-  --gold: #B8893A;          /* slightly deeper, professional gold */
+  --line: #E2E2E6;          /* hairline divider (lighter on white) */
+  --line-2: #ECECEF;
+  --accent: #0071E3;        /* Apple system blue — accent / interactive */
+  --accent-soft: #EAF2FD;   /* light blue tint */
+  --accent-deep: #0058B9;
+  --sage: #5A6B7B;          /* neutral slate — status dots */
+  --ocean: #5A6B7B;
+  --gold: #B8893A;          /* professional gold — premium moments */
   --gold-light: #DBC79A;
 
   --r-xs: 4px;
@@ -34,7 +34,7 @@
   --shadow-md: 0 2px 8px rgba(0, 0, 0, 0.06), 0 0 0 0.5px rgba(0, 0, 0, 0.05);
   --shadow-lg: 0 4px 24px rgba(0, 0, 0, 0.08), 0 0 0 0.5px rgba(0, 0, 0, 0.06);
   --shadow-float: 0 12px 40px rgba(0, 0, 0, 0.12), 0 0 0 0.5px rgba(0, 0, 0, 0.06);
-  --shadow-frap: 0 4px 16px rgba(0, 117, 74, 0.24), 0 12px 32px rgba(0, 117, 74, 0.18);
+  --shadow-frap: 0 4px 16px rgba(0, 113, 227, 0.24), 0 12px 32px rgba(0, 113, 227, 0.18);
 
   /* density */
   --pad-x: 18px;
@@ -74,9 +74,9 @@
   --ink-4: #48484A;
   --line: #38383A;
   --line-2: #2C2C2E;
-  --accent: #30D158;        /* Apple system green dark */
-  --accent-soft: #1A2E22;
-  --accent-deep: #4CE077;
+  --accent: #0A84FF;        /* Apple system blue — dark */
+  --accent-soft: #0E2742;
+  --accent-deep: #409CFF;
   --shadow-sm: 0 1px 2px rgba(0,0,0,.35), 0 0 0 0.5px rgba(255,255,255,.04);
   --shadow-md: 0 4px 14px rgba(0,0,0,.4), 0 0 0 0.5px rgba(255,255,255,.05);
   --shadow-lg: 0 16px 40px rgba(0,0,0,.45), 0 0 0 0.5px rgba(255,255,255,.05);
@@ -250,7 +250,7 @@ button { background: none; border: 0; cursor: pointer; padding: 0; }
 .tb-pill .dot {
   width: 6px; height: 6px; border-radius: 50%;
   background: var(--sage);
-  box-shadow: 0 0 0 3px rgba(107, 142, 107, .15);
+  box-shadow: 0 0 0 3px rgba(90, 107, 123, .18);
 }
 .tb-search {
   flex: 0 1 360px;
@@ -530,7 +530,7 @@ h4 { font-size: 13px; font-weight: 600; }
 }
 .frap:hover {
   transform: translateY(-2px) scale(1.03);
-  box-shadow: 0 0 8px rgba(0, 117, 74, 0.36), 0 16px 30px rgba(0, 117, 74, 0.30);
+  box-shadow: 0 0 8px rgba(0, 113, 227, 0.36), 0 16px 30px rgba(0, 113, 227, 0.30);
 }
 .frap:active { transform: scale(0.95); }
 .frap svg { width: 26px; height: 26px; }
@@ -976,7 +976,7 @@ h4 { font-size: 13px; font-weight: 600; }
   width: 6px; height: 6px;
   border-radius: 50%;
   background: var(--sage);
-  box-shadow: 0 0 0 3px rgba(107, 142, 107, .2);
+  box-shadow: 0 0 0 3px rgba(90, 107, 123, .2);
 }
 
 .chat-scroll {
@@ -1226,7 +1226,7 @@ h4 { font-size: 13px; font-weight: 600; }
 .canvas-card:hover { box-shadow: var(--shadow-lg); }
 .canvas-card.is-selected {
   border-color: var(--accent);
-  box-shadow: 0 0 0 3px rgba(209, 75, 51, 0.18), var(--shadow-lg);
+  box-shadow: 0 0 0 3px rgba(0, 113, 227, 0.18), var(--shadow-lg);
 }
 .canvas-card:active { cursor: grabbing; }
 
@@ -1742,7 +1742,7 @@ h4 { font-size: 13px; font-weight: 600; }
   width: 14px; height: 14px;
   border-radius: 50%;
   background: var(--accent);
-  box-shadow: 0 0 0 4px rgba(209, 75, 51, 0.18);
+  box-shadow: 0 0 0 4px rgba(0, 113, 227, 0.18);
 }
 .ed-dir-lbl {
   font-size: 11px;

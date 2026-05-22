@@ -5,11 +5,11 @@ import type { Tweaks, Density, Accent } from "../hooks/useTweaks";
 import type { Route } from "../App";
 
 const ACCENT_OPTIONS: [string, string][] = [
-  ["#00754A", "#005A39"],
-  ["#1E3932", "#0D2520"],
-  ["#B8893A", "#9C7A3F"],
-  ["#D14B33", "#9A2D1A"],
-  ["#3D5A6C", "#1F3340"],
+  ["#0071E3", "#0058B9"],   // Apple blue (default)
+  ["#1D1D1F", "#000000"],   // ink — monochrome
+  ["#B8893A", "#9C7A3F"],   // gold
+  ["#D14B33", "#9A2D1A"],   // vermillion
+  ["#3D5A6C", "#1F3340"],   // slate
 ];
 
 const ROUTES: { value: Route; label: string }[] = [
@@ -17,6 +17,8 @@ const ROUTES: { value: Route; label: string }[] = [
   { value: "studio", label: "工作室 / Studio" },
   { value: "editor", label: "编辑器 / Editor" },
   { value: "video", label: "视频代理 / Video" },
+  { value: "copy", label: "生文 / Copywriter" },
+  { value: "market", label: "营销 / Marketing" },
   { value: "assets", label: "素材库 / Assets" },
 ];
 
